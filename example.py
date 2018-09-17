@@ -19,8 +19,8 @@ import sys
 import os
 import datetime
 
-__author__ = "Bruce Montgomery"
-__copyright__ = "Copyright (C) 2018 by Bruce Montgomery"
+__author__ = "Vipul Gupta"
+__copyright__ = "Copyright (C) 2018 by Vipul Gupta"
 #
 # Redistribution, modification or use of this software in source or binary
 # forms is permitted as long as the files maintain this copyright. Users are
@@ -45,7 +45,7 @@ class Dog(object):
 def walker(name):
     """walker: an example of a python function"""
     dog1 = Dog(name)
-    dog1.add_trick("Roll Over")
+    dog1.add_trick("Play Dead")
     print("Walking a new dog:")
     print("  The kind of this thing is ",dog1.kind)
     print("  This dog is ",dog1.name)
