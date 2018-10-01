@@ -1,0 +1,5 @@
+http://www.pyqtgraph.org/documentation/how_to_use.html
+
+http://embeddedlaboratory.blogspot.com/2018/04/design-gui-using-pyqt5-on-raspberry-pi.html
+
+https://stackoverflow.com/questions/11812000/login-dialog-pyqt
