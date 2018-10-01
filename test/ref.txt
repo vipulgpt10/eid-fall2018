@@ -9,3 +9,5 @@ https://matplotlib.org/users/pyplot_tutorial.html
 https://www.geeksforgeeks.org/list-methods-python/
 
 https://www.geeksforgeeks.org/list-methods-in-python-set-2-del-remove-sort-insert-pop-extend/
+
+https://www.pythonforbeginners.com/basics/python-datetime-time-examples

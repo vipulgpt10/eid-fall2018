@@ -33,6 +33,8 @@ from PyQt5 import QtWidgets
 
 import matplotlib.pyplot as plt
 import numpy as np
+import time
+import datetime
 
 
 
@@ -63,7 +65,7 @@ class design_class(QDialog):
 		# timer intialization
 		self.timer = QtCore.QTimer()
 		self.timer.timeout.connect(self.timer_loop)
-		self.timer.start(3000)
+		self.timer.start(2000)
 		
 		
 	@pyqtSlot() 	#accepting signals
@@ -78,12 +80,13 @@ class design_class(QDialog):
 	def timer_loop(self):
 		self.label_7.setText(' ')
 		self.set_values()
+		self.date_time()
 		self.plot_graph()
 		if self.error == 0:
 			self.check_threshold()
 			
-		# repeat after 2 seconds
-		self.timer.start(2000)
+		# repeat after 1 seconds
+		self.timer.start(1000)
 		
 	# read and set sensor values
 	def set_values(self):
@@ -111,6 +114,11 @@ class design_class(QDialog):
 		self.label_6.setText('{0:0.1f}%'.format(humidity))
 		
 		self.error = 0
+		
+	# date and time
+	def date_time(self):
+		my_time = datetime.datetime.now().strftime("Date: %y-%m-%d Time: %H-%M-%S")
+		self.label_11.setText(str(my_time))
 		
 	# set threshold value 
 	def set_threshold(self):
