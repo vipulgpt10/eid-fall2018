@@ -41,12 +41,13 @@ class design_class(QDialog):
 	
 	def __init__(self):
 		super(design_class,self).__init__()
-		loadUi('basic2.ui', self)
+		loadUi('proj1.ui', self)
 		# buttons for refresh, exit, set threshold
 		self.pushButton.clicked.connect(self.on_pushBut_clicked)
 		self.pushButton_2.clicked.connect(self.exit_clicked)
 		self.pushButton_4.clicked.connect(self.set_threshold)
 		
+		# set threshold to 200 deg C and 100% at init
 		self.threshold_temp = 200.0
 		self.threshold_hum = 100.0
 		self.error = 0
@@ -81,7 +82,6 @@ class design_class(QDialog):
 		if self.error == 0:
 			self.check_threshold()
 			
-		print (self.error)
 		# repeat after 2 seconds
 		self.timer.start(2000)
 		

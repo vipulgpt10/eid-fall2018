@@ -3,3 +3,9 @@ http://www.pyqtgraph.org/documentation/how_to_use.html
 http://embeddedlaboratory.blogspot.com/2018/04/design-gui-using-pyqt5-on-raspberry-pi.html
 
 https://stackoverflow.com/questions/11812000/login-dialog-pyqt
+
+https://matplotlib.org/users/pyplot_tutorial.html
+
+https://www.geeksforgeeks.org/list-methods-python/
+
+https://www.geeksforgeeks.org/list-methods-in-python-set-2-del-remove-sort-insert-pop-extend/
