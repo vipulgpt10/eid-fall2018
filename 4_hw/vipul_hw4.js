@@ -50,7 +50,7 @@ function temp_humd(err, temperature, humidity)
 
 function intervalFunc() 
 {
-	//console.log('Cant stop me now!');
+	/* Read sensor readings */
 	sensor.read(22, 4, temp_humd);
 	
 	if(cnt == 10)
