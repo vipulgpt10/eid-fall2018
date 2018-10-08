@@ -83,5 +83,5 @@ function intervalFunc()
 	}
 }
 
-/* Infinite loop at every 1 sec */
-setInterval(intervalFunc, 1000);
+/* Infinite loop at every 10 sec */
+setInterval(intervalFunc, 10000);
