@@ -1,0 +1,243 @@
+<!doctype html>
+<html>
+  <head>
+    <title>WebSockets Project 2 EID</title>
+    <meta charset="utf-8" />
+    <style type="text/css">
+      body {
+        text-align: center;
+        min-width: 500px;
+      }
+    </style>
+    <script src="http://code.jquery.com/jquery.min.js"></script>
+    <script>
+ 
+      // log function
+      log = function(data){
+        $("div#terminal").prepend("</br>" +data);
+        console.log(data);
+      };
+ 
+      $(document).ready(function () {
+		$("div#connection_details").hide()
+        $("div#message_details").hide()
+ 
+        var ws;
+        
+          $("#login").click(function(evt) {
+			evt.preventDefault();
+			
+			var uid = $("#uid").val();
+			var pass = $("#pass").val();
+			
+			if(uid == "vipul" && pass == "lol")
+			{
+				log("Login Successful");
+				$("#uid").css("background", "#00ff00"); 
+				$("#pass").css("background", "#00ff00"); 
+				$("div#connection_details").show();
+			}
+			else
+			{
+				log("User ID or Password incorrect!");
+				$("#uid").css("background", "#ff0000"); 
+				$("#pass").css("background", "#ff0000"); 
+			}		
+			
+ 
+        });
+ 
+        $("#open").click(function(evt) {
+          evt.preventDefault();
+ 
+          var host = $("#host").val();
+          var port = $("#port").val();
+          var uri = $("#uri").val();
+ 
+          // create websocket instance
+          ws = new WebSocket("ws://" + host + ":" + port + uri);
+           
+          // Handle incoming websocket message callback
+          ws.onmessage = function(evt) {
+            log("Message Received: " + evt.data)
+            //alert("message received: " + evt.data);
+            var str1 = (evt.data).split(";", 2);
+            $("#message").val(str1[0]);
+            $("#time").val(str1[1]);
+            };
+ 
+          // Close Websocket callback
+          ws.onclose = function(evt) {
+            log("***Connection Closed***");
+            alert("Connection close");
+            $("#host").css("background", "#ff0000"); 
+            $("#port").css("background", "#ff0000"); 
+            $("#uri").css("background",  "#ff0000");
+            $("div#message_details").empty();
+ 
+            };
+ 
+          // Open Websocket callback
+          ws.onopen = function(evt) { 
+            $("#host").css("background", "#00ff00"); 
+            $("#port").css("background", "#00ff00"); 
+            $("#uri").css("background", "#00ff00");
+            $("div#message_details").show();
+            $("div#login_details").hide()
+            log("***Connection Opened***");
+          };
+        });
+ 
+        // Send websocket message function
+
+        $("#Tlast").click(function(evt) {
+            log("Requesting Last Temperature");
+            var selValue = $('input[name=temp]:checked').val();
+            
+            if(selValue == 1)
+            {
+				ws.send("TlastC");
+			}
+			else if(selValue == 2)
+			{
+				ws.send("TlastF");
+			}
+			else
+			{
+				$("#message").val("Select Celcius or Fahrenheit");
+			}	        
+        });
+        
+        $("#Tavg").click(function(evt) {
+            log("Requesting Average Temperature");
+            var selValue = $('input[name=temp]:checked').val();
+            
+            if(selValue == 1)
+            {
+				ws.send("TavgC");
+			}
+			else if(selValue == 2)
+			{
+				ws.send("TavgF");
+			}
+			else
+			{
+				$("#message").val("Select Celcius or Fahrenheit");
+			}		        
+        });
+        
+        $("#Thigh").click(function(evt) {
+            log("Requesting Highest Temperature");
+            var selValue = $('input[name=temp]:checked').val();
+            
+            if(selValue == 1)
+            {
+				ws.send("ThighC");
+			}
+			else if(selValue == 2)
+			{
+				ws.send("ThighF");
+			}
+			else
+			{
+				$("#message").val("Select Celcius or Fahrenheit");
+			}		        
+        });
+        
+        $("#Tlow").click(function(evt) {
+            log("Requesting Lowest Temperature");
+            var selValue = $('input[name=temp]:checked').val();
+            
+            if(selValue == 1)
+            {
+				ws.send("TlowC");
+			}
+			else if(selValue == 2)
+			{
+				ws.send("TlowF");
+			}
+			else
+			{
+				$("#message").val("Select Celcius or Fahrenheit");
+			}		        
+        });
+        
+        $("#Hlast").click(function(evt) {
+            log("Requesting Last Humidity");
+            
+            ws.send("Hlast");          	        
+        });
+        
+        $("#Havg").click(function(evt) {
+            log("Requesting Average Humidity");
+            
+            ws.send("Havg");          	        
+        });
+        
+        $("#Hhigh").click(function(evt) {
+            log("Requesting Highest Humidity");
+            
+            ws.send("Hhigh");          	        
+        });
+        
+        $("#Hlow").click(function(evt) {
+            log("Requesting Lowest Humidity");
+            
+            ws.send("Hlow");          	        
+        });
+        
+      });
+    </script>
+  </head>
+ 
+  <body>
+    <h1>WebSockets Project 2 EID: Temperature and Humidity
+    </h1>
+    <div id="login_details">
+      <label for="uid">Username:</label>
+      <input type="text" id="uid" /><br />
+      <label for="pass">Password:</label>
+      <input type="text" id="pass" /><br />
+      </br></br>
+      <input type="submit" id="login" value="Login" />
+      </br></br>
+      </br></br>
+      </br></br>
+    </div>
+    <div id="connection_details">
+      <label for="host">host:</label>
+      <input type="text" id="host" value="localhost" style="background:#ff0000;"/><br />
+      <label for="port">port:</label>
+      <input type="text" id="port" value="8888" style="background:#ff0000;"/><br />
+      <label for="uri">uri:</label>
+      <input type="text" id="uri" value="/ws" style="background:#ff0000;"/><br />
+      <input type="submit" id="open" value="open" />
+      </br></br>
+      </br></br>
+    </div>
+    <div id="message_details">
+        </br></br>
+        <input type="radio" name="temp" value="1"/> Celcius <br/>
+		<input type="radio" name="temp" value="2"/> Faranheit <br/>
+		</br></br>
+        <input type="submit" id="Tlast" value="Latest Temperature" />
+        <input type="submit" id="Tavg" value="Average Temperature" />
+        <input type="submit" id="Thigh" value="Highest Temperature" />
+        <input type="submit" id="Tlow" value="Lowest Temperature" />
+        </br></br>
+        <input type="submit" id="Hlast" value="Latest Humidity" />
+        <input type="submit" id="Havg" value="Average Humidity" />
+        <input type="submit" id="Hhigh" value="Highest Humidity" />
+        <input type="submit" id="Hlow" value="Lowest Humidity" />
+        </br></br>
+        <label for="message">Message:</label>
+        <input type="text" id="message" value=" "/><br />
+        <label for="time">Timestamp:</label>
+        <input type="text" id="time" value=" "/><br />
+        </br></br>
+    </div>
+    <div id="terminal">
+        
+    </div>
+  </body>
+</html>

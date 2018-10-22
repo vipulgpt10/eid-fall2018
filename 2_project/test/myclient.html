@@ -1,0 +1,124 @@
+<!doctype html>
+<html>
+  <head>
+    <title>WebSockets EID</title>
+    <meta charset="utf-8" />
+    <style type="text/css">
+      body {
+        text-align: center;
+        min-width: 500px;
+      }
+    </style>
+    <script src="http://code.jquery.com/jquery.min.js"></script>
+    <script>
+ 
+      // log function
+      log = function(data){
+        $("div#terminal").prepend("</br>" +data);
+        console.log(data);
+      };
+ 
+      $(document).ready(function () {
+        $("div#message_details").hide()
+        //$("div#radio_button").hide()
+ 
+        var ws;
+ 
+        $("#open").click(function(evt) {
+          evt.preventDefault();
+ 
+          var host = $("#host").val();
+          var port = $("#port").val();
+          var uri = $("#uri").val();
+ 
+          // create websocket instance
+          ws = new WebSocket("ws://" + host + ":" + port + uri);
+           
+          // Handle incoming websocket message callback
+          ws.onmessage = function(evt) {
+            log("Message Received: " + evt.data);
+            //alert("message received: " + evt.data);
+            $("#message").val(evt.data);
+            };
+ 
+          // Close Websocket callback
+          ws.onclose = function(evt) {
+            log("***Connection Closed***");
+            alert("Connection close");
+            $("#host").css("background", "#ff0000"); 
+            $("#port").css("background", "#ff0000"); 
+            $("#uri").css("background",  "#ff0000");
+            $("div#message_details").empty();
+ 
+            };
+ 
+          // Open Websocket callback
+          ws.onopen = function(evt) { 
+            $("#host").css("background", "#00ff00"); 
+            $("#port").css("background", "#00ff00"); 
+            $("#uri").css("background", "#00ff00");
+            $("div#message_details").show();
+            log("***Connection Opened***");
+          };
+        });
+ 
+        // Send websocket message function
+        $("#Tlast").click(function(evt) {
+			var setValue = 1;
+			//var selValue = $('input[name=temp]:checked').val();
+            log("Sending Message: "+$("#message").val());
+            if(selValue == 1):
+				ws.send("Tlast");
+			else:
+				ws.send("Tavg");
+        });
+        
+        $("#Tavg").click(function(evt) {
+            log("Sending Message: "+$("#message").val());
+            ws.send("Tavg");
+        });
+        
+        $("#Thigh").click(function(evt) {
+            log("Sending Message: "+$("#message").val());
+            ws.send("Thigh");
+        });
+ 
+      });
+    </script>
+  </head>
+ 
+  <body>
+    <h1>WebSockets EID Project 2: Temperature and Humidity</h1>
+    <div id="connection_details">
+      <label for="host">host:</label>
+      <input type="text" id="host" value="localhost" style="background:#ff0000;"/><br />
+      <label for="port">port:</label>
+      <input type="text" id="port" value="8888" style="background:#ff0000;"/><br />
+      <label for="uri">uri:</label>
+      <input type="text" id="uri" value="/ws" style="background:#ff0000;"/><br />
+      <input type="submit" id="open" value="open" />
+    </div>
+    <div id="radio_button">
+		<input type="radio" name="temp" value="1"/> Celcius <br/>
+		<input type="radio" name="temp" value="2"/> Faranheit <br/>
+		<br/><br/>
+	</div>
+    <div id="message_details">
+        </br></br>
+        <input type="submit" id="Tlast" value="Latest Temperature" />
+        <input type="submit" id="Tavg" value="Average Temperature" />
+        <input type="submit" id="Thigh" value="Highest Temperature" />
+        <input type="submit" id="Tlow" value="Lowest Temperature" />
+        <input type="submit" id="Hlast" value="Latest Humidity" />
+        <input type="submit" id="Havg" value="Average Humidity" />
+        <input type="submit" id="Hhigh" value="Highest Humidity" />
+        <input type="submit" id="Hlow" value="Lowest Humidity" /><br />
+        <label for="message">Message:</label>
+        <input type="text" id="message" value=" "/><br />
+        <input type="submit" id="send" value="Send" />
+    </div>
+    <div id="terminal">
+        
+    </div>
+  </body>
+</html>
