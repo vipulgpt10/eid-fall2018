@@ -11,10 +11,6 @@ https://stackoverflow.com/questions/11812000/login-dialog-pyqt
 https://ralsina.me/posts/BB974.html
 https://gist.github.com/pklaus/3e16982d952969eb8a9a#file-embedding_in_qt5-py-L14
 https://www.youtube.com/watch?v=7SrD4l2o-uk
-
-**ADD REFERENCE FOR WEBSOCKETS**
-
-
 """
 import sys
 from PyQt5 import QtCore
@@ -106,21 +102,21 @@ class WSHandler(tornado.websocket.WebSocketHandler):
                 elif message == "TavgC":
                     self.write_message("{};{}".format(row[6],row[2]))
                 elif message == "TavgF":
-                    client_data = row[6]
+                    client_data = float(row[6])
                     client_data = client_data * 1.8
                     client_data = client_data + 32
                     self.write_message("{};{}".format(client_data,row[2]))
                 elif message == "ThighC":
                     self.write_message("{}:{}".format(row[3],row[2]))
                 elif message == "ThighF":
-                    client_data = row[3]
+                    client_data = float(row[3])
                     client_data = client_data * 1.8
                     client_data = client_data + 32
                     self.write_message("{};{}".format(client_data,row[2]))
                 elif message == "TlowC":
                     self.write_message("{};{}".format(row[4],row[2]))
                 elif message == "TlowF":
-                    client_data = row[4]
+                    client_data = float(row[4])
                     client_data = client_data * 1.8
                     client_data = client_data + 32
                     self.write_message("{};{}".format(client_data,row[2]))
