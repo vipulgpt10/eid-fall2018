@@ -178,7 +178,7 @@ class Login(QtWidgets.QDialog):
 
     def handleLogin(self):
         if (self.textName.text() == 'vipulgpt10' and
-            self.textPass.text() == 'vip_eid'):
+            self.textPass.text() == 'lol'):
             self.accept()
         else:
             QtWidgets.QMessageBox.warning(
