@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>872</width>
+    <height>344</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QLabel" name="temp_label">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>10</y>
+     <width>131</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Temperature</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="hum_label">
+   <property name="geometry">
+    <rect>
+     <x>470</x>
+     <y>10</y>
+     <width>111</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Humidity</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="refresh_temp">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>80</y>
+     <width>101</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Refresh</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="refresh_hum">
+   <property name="geometry">
+    <rect>
+     <x>450</x>
+     <y>80</y>
+     <width>101</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Refresh</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="temp_value">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>30</y>
+     <width>141</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Current temperature</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="hum_value">
+   <property name="geometry">
+    <rect>
+     <x>470</x>
+     <y>30</y>
+     <width>151</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Current Humidity</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="temp_time">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>50</y>
+     <width>91</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Time</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="hum_time">
+   <property name="geometry">
+    <rect>
+     <x>470</x>
+     <y>50</y>
+     <width>91</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Time</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="conversion_button">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>80</y>
+     <width>51</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>C/F</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="alarm_temp">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>130</y>
+     <width>271</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="alarm_hum">
+   <property name="geometry">
+    <rect>
+     <x>380</x>
+     <y>120</y>
+     <width>271</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>160</y>
+     <width>111</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Threshold in C</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="temp_threshold">
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>160</y>
+     <width>91</width>
+     <height>33</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="hum_threshold">
+   <property name="geometry">
+    <rect>
+     <x>510</x>
+     <y>160</y>
+     <width>113</width>
+     <height>33</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="last_temp_label">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>210</y>
+     <width>121</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Last value:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="avg_temp_label">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>240</y>
+     <width>121</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Average:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="low_temp_label">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>300</y>
+     <width>121</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Lowest:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="high_temp_label">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>270</y>
+     <width>121</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Highest:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="last_hum_label">
+   <property name="geometry">
+    <rect>
+     <x>400</x>
+     <y>210</y>
+     <width>131</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Last value:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="avg_hum_label">
+   <property name="geometry">
+    <rect>
+     <x>400</x>
+     <y>240</y>
+     <width>131</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Average:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="low_hum_label">
+   <property name="geometry">
+    <rect>
+     <x>400</x>
+     <y>300</y>
+     <width>141</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Lowest:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="high_hum_label">
+   <property name="geometry">
+    <rect>
+     <x>400</x>
+     <y>270</y>
+     <width>141</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Highest:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>430</x>
+     <y>160</y>
+     <width>81</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Threshold</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="last_temp_time">
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>210</y>
+     <width>291</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Time: </string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="avg_temp_time">
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>240</y>
+     <width>291</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Time: </string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="low_temp_time">
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>300</y>
+     <width>291</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Time: </string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="high_temp_time">
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>270</y>
+     <width>291</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Time: </string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="avg_hum_time">
+   <property name="geometry">
+    <rect>
+     <x>540</x>
+     <y>240</y>
+     <width>271</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Time: </string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="high_hum_time">
+   <property name="geometry">
+    <rect>
+     <x>540</x>
+     <y>270</y>
+     <width>281</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Time: </string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="last_hum_time">
+   <property name="geometry">
+    <rect>
+     <x>540</x>
+     <y>210</y>
+     <width>301</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Time: </string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="low_hum_time">
+   <property name="geometry">
+    <rect>
+     <x>540</x>
+     <y>300</y>
+     <width>311</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Time: </string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
