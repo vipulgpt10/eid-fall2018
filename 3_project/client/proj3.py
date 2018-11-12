@@ -39,7 +39,7 @@ class design_class(QDialog):
 	
 	def __init__(self):
 		super(design_class,self).__init__()
-		loadUi('proj1.ui', self)
+		loadUi('proj3.ui', self)
 		# buttons for refresh, exit
 		self.pushButton.clicked.connect(self.on_pushBut_clicked)
 		self.pushButton_2.clicked.connect(self.exit_clicked)
