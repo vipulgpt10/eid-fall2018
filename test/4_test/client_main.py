@@ -64,7 +64,7 @@ class COAPClient(object):
     async def put(self, msg):
         self.ms = int(round(time.time()*1000))
         request = Message(code=PUT, payload=bytes(msg, 'utf-8'))
-        request.opt.uri_host = '127.0.0.1'
+        request.opt.uri_host = '10.0.0.236'
         request.opt.uri_path = ("other", "block")
         response = await self.context.request(request).response
         self.ms = int(round(time.time()*1000))-self.ms
@@ -127,7 +127,7 @@ def start_profiling():
 		print(rc[0])
 		print(rc[1])
 		
-	client = Client("ws://localhost:3000", 5)
+	client = Client("ws://10.0.0.236:3000", 5)
 	for x in range(0, 5):
 		print('Websocket msg#'+str(x+1))
 		client.connect()
