@@ -39,12 +39,12 @@ class MQTTClient(object):
         
 mqtt_instance = MQTTClient()
 
-msg = 'msg'
 
-for x in range(0, 3):
-	print('[mqtt] Publishing for the '+str(x+1)+'th time')
-	rc = mqtt_instance.publish("topic/incoming", msg)
-	print('[mqtt] Received')
+
+for x in range(0, 5):
+	print('[MQTT] Publishing #'+str(x+1))
+	rc = mqtt_instance.publish("topic/incoming", 'msg')
+	print('[MQTT] Received')
 	print(rc[0])
 	print(rc[1])
 

@@ -17,10 +17,10 @@ def on_message(client, userdata, msg):
     print('received: '+message)
     time.sleep(4)
     client.publish("topic/out", message)
-    if n == 3:
-        time.sleep(8)
+    if n == 5:
+        time.sleep(5)
         n = 0
-        client.disconnect()
+        #client.disconnect()
 
 
 def start_mqtt():
