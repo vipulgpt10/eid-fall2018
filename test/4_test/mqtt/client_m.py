@@ -20,8 +20,9 @@ class MQTTClient(object):
         self.ms = int(round(time.time()*1000))-self.ms
         msg = msg.payload.decode().split(',')
         length = len(msg)
-        self.client.disconnect()
         self.response = [self.ms, length]
+        self.client.disconnect()
+        
 
     def publish(self, topic, msg):
         self.response = None
@@ -29,11 +30,22 @@ class MQTTClient(object):
         self.client.publish(topic, msg)
         while self.response == None:
             self.client.loop_forever()
+        self.client.reconnect()
         return self.response
 
+    def disconnect(self):
+        self.client.disconnect()
+        
+        
+mqtt_instance = MQTTClient()
 
-a = MQTTClient()
-# the return value rc is a list that contains the time it took and the length of the msg:
-# rc = [time, length] eg.: rc = [44, 3] ---it took 44ms, received 3 numbers
-rc = a.publish("topic/incoming", "22,23,24")
-print(rc)
+msg = 'msg'
+
+for x in range(0, 3):
+	print('[mqtt] Publishing for the '+str(x+1)+'th time')
+	rc = mqtt_instance.publish("topic/incoming", msg)
+	print('[mqtt] Received')
+	print(rc[0])
+	print(rc[1])
+
+

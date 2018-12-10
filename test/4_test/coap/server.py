@@ -6,7 +6,7 @@ import asyncio
 import aiocoap.resource as resource
 import aiocoap
 
-
+'''
 class BlockResource(resource.Resource):
     """Example resource which supports the GET and PUT methods. It sends large
     responses, which trigger blockwise transfer."""
@@ -19,8 +19,8 @@ class BlockResource(resource.Resource):
 
     def set_content(self, content):
         self.content = content
-        while len(self.content) <= 1024:
-            self.content = self.content + b"Hhahahahah\n"
+        #while len(self.content) <= 1024:
+            #self.content = self.content + b"Hhahahahah\n"
 
     async def render_get(self, request):
         return aiocoap.Message(payload=self.content)
@@ -101,3 +101,31 @@ def main():
 
 if __name__ == "__main__":
     main()
+'''
+
+class BlockResource(resource.Resource):
+   
+    def __init__(self):
+        super().__init__()
+    
+    def set_content(self, content):
+        self.content = content
+
+    async def render_get(self, request):
+        return aiocoap.Message(payload=self.content)
+    
+    async def render_put(self, request):
+        print('PUT payload: %s' % request.payload)
+        self.set_content(request.payload)
+        return aiocoap.Message(payload=self.content)
+
+
+def start_coap_test():
+    root = resource.Site()
+    root.add_resource(('.well-known', 'core'),
+                      resource.WKCResource(root.get_resources_as_linkheader))
+    root.add_resource(('other', 'block'), BlockResource())
+    asyncio.Task(aiocoap.Context.create_server_context(root))
+    asyncio.get_event_loop().run_forever()
+    
+start_coap_test()
