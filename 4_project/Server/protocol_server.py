@@ -42,9 +42,9 @@ def on_message(client, userdata, msg):
     n1 += 1
     message = msg.payload.decode()
     print('[MQTT] MSG Received: '+message)
-    time.sleep(50.0/1000.0)
+    time.sleep(100.0/1000.0)
     client.publish("topic/out", message)
-    if n1 == 5:
+    if n1 == 20:
         time.sleep(5)
         n1 = 0
 
@@ -111,7 +111,7 @@ class MainHandler(tornado.websocket.WebSocketHandler):
 		n2 += 1
 		print('[WebSocket] Message received')
 		self.write_message(message)
-		if n2 == 5:
+		if n2 == 20:
 			n2 = 0
 			time.sleep(1)
 

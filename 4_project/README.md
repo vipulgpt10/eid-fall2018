@@ -1,5 +1,5 @@
-#Project 3
-Team Members: Vipul Gupta and Vipraja Patil Project: Project 3 (AWS Client and Server)
+#Project 4
+Team Members: Vipul Gupta and Vipraja Patil Project: Project 4 (Protocol Profiling + AWS Client Server)
 
 Installation Instruction:
 
@@ -7,15 +7,17 @@ Install the necessary libraries which are included. use: sudo pip3 install torna
 
 Connect DHT22 sensor at GPIO 4 (Pin #7)
 
-Server Files: project3.py, project3.ui, login.ui 
+Server Files: project3.py, project3.ui, login.ui protocol_server.py
 
-Client Files: proj3.py, proj3.ui
+Client Files: proj4.py, proj4.ui
 
-To execute servevr: python3 project2.py userid: vipraja password:vipraja
+To execute server for AWS iot: python3 project3.py userid: vipraja password:vipraja
+To execute server for Protocol profiling: python3 protocol_server.py
 
-To execute client: python3 proj3.py userid: vipul password: lol
+To execute client: python3 proj4.py userid: vipulgpt10 password: lol
 
 Project Work:
+Protocol Profiling: Calculates the total and average roundtrip time of protocols: MQTT using Mosquitto broker, CoAP and Websocket
 
 A PyQt5 GUI application to display temperature and humidity values on the window along with date and time and uploading data to AWS Server. 
 It also has a client side (using tornado) which fetches the values from AWS server and displays on the interface.

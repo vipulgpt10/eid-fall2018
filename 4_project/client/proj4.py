@@ -20,6 +20,25 @@ import time
 import datetime
 
 
+import paho.mqtt.client as mqtt
+import socket
+import time
+
+import asyncio
+from aiocoap import *
+
+
+from tornado.ioloop import IOLoop, PeriodicCallback
+from tornado import gen
+from tornado.websocket import websocket_connect
+
+import tornado.web
+import tornado.websocket
+import tornado.ioloop
+
+import time
+
+
 max_queue_messages = 1
 
 region_name = 'us-east-2'
@@ -34,20 +53,173 @@ sqs = boto3.resource('sqs', region_name=region_name,
 
 queue = sqs.Queue(myQueueUrl)
 
+#average times for roundtrip
+global time1 
+global time2 
+global time3 
+
+time1 = [0] *20
+time2 = [0] *20
+time3 = [0] *20
+
+global a1
+global a2
+global a3
+
+a1 = 0
+a2 = 0
+a3 = 0
+
+
+# MQTT
+class MQTTClient(object):
+    def __init__(self):
+        self.response = None
+        self.ms = 0
+        self.client = mqtt.Client()
+        self.client.connect('10.0.0.246', 1883, 60)
+        self.client.on_connect = self.on_connect
+        self.client.on_message = self.on_message
+
+    def on_connect(self, client, userdata, flags, rc):
+        self.client.subscribe("topic/out")
+
+    def on_message(self, client, userdate, msg):
+        self.ms = int(round(time.time()*1000))-self.ms
+        msg = msg.payload.decode().split(',')
+        length = len(msg)
+        self.response = [self.ms, length]
+        self.client.disconnect()
+        
+
+    def publish(self, topic, msg):
+        self.response = None
+        self.ms = int(round(time.time()*1000))
+        self.client.publish(topic, msg)
+        while self.response == None:
+            self.client.loop_forever()
+        self.client.reconnect()
+        return self.response
+
+    def disconnect(self):
+        self.client.disconnect()
+        
+# COAP
+class COAPClient(object):
+    def __init__(self):
+        self.ms = 0
+        self.length = 0
+        self.context = None
+        asyncio.get_event_loop().run_until_complete(self.create_context())
+
+    async def create_context(self):
+        self.context = await Context.create_client_context()
+
+    async def put(self, msg):
+        self.ms = int(round(time.time()*1000))
+        request = Message(code=PUT, payload=bytes(msg, 'utf-8'))
+        request.opt.uri_host = '10.0.0.236'
+        request.opt.uri_path = ("other", "block")
+        response = await self.context.request(request).response
+        self.ms = int(round(time.time()*1000))-self.ms
+        self.length = len(response.payload.decode().split(','))
+    
+    def return_value(self):
+        return [self.ms, self.length]
+
+# WebSocket
+
+class Client(object):
+    def __init__(self, url, timeout):
+        self.url = url
+        self.timeout = timeout
+        self.ioloop = IOLoop.instance()
+        self.ws = None
+        self.ms = 0
+        self.length = 0
+        
+    @gen.coroutine
+    def connect(self):
+        print ("trying to connect")
+        
+        try:
+            self.ws = yield websocket_connect(self.url)
+        except Exception as e:
+            print("connection error")
+        else:
+            print("connected")
+            self.ms = int(round(time.time()*1000))
+            self.ws.write_message("msg")
+            msg = yield self.ws.read_message()
+            self.ms = int(round(time.time()*1000))-self.ms
+            self.length = 1
+            print(msg)
+            self.ioloop.stop()
+
+
+    def return_value(self):
+        return [self.ms, self.length]
+
+
+def start_profiling():
+	
+	global time1 
+	global time2 
+	global time3 
+
+	global a1 
+	global a2 
+	global a3 
+	mqtt_instance = MQTTClient()     
+	
+	for x in range(0, 20):
+		print('[MQTT] Publishing #'+str(x+1))
+		rc = mqtt_instance.publish("topic/incoming", 'msg')
+		print('[MQTT] Received')
+		print(rc[0])
+		time1.append(rc[0])
+	a1 = sum(time1)/20.0
+		
+	coap_instance = COAPClient()
+	for x in range(0, 20):
+		print('[COAP] PUT msg #'+str(x+1))
+		asyncio.get_event_loop().run_until_complete(coap_instance.put('msg'))
+		print('[COAP] Received')
+		rc = coap_instance.return_value()
+		print(rc[0])
+		time2.append(rc[0])
+	a2 = sum(time2)/20.0
+		
+	client = Client("ws://10.0.0.236:3000", 5)
+	for x in range(0, 20):
+		print('Websocket msg#'+str(x+1))
+		client.connect()
+		client.ioloop.start()
+		rc = client.return_value()
+		print(rc[0])
+		time3.append(rc[0])
+	a3 = sum(time3)/20.0
+
+
+
 #class for window dialog
 class design_class(QDialog):
 	
 	def __init__(self):
 		super(design_class,self).__init__()
-		loadUi('proj3.ui', self)
+		loadUi('proj4.ui', self)
 		# buttons for refresh, exit
 		self.pushButton.clicked.connect(self.on_pushBut_clicked)
 		self.pushButton_2.clicked.connect(self.exit_clicked)
-		self.pushButton_3.clicked.connect(self.cflag_clicked)	
+		self.pushButton_3.clicked.connect(self.cflag_clicked)
+		self.pushButton_4.clicked.connect(self.profile)	
 		
 		# 0 - celcius, 1 - farenheit
 		self.tflag = 0
 		self.label.setText('Will get Temperature values in Celcius')
+		self.label_2.setText('0')
+		self.label_3.setText('0')
+		self.label_4.setText('0')
 		
 		#list for graph
 		self.tlast_list = [0] * 10
@@ -90,6 +262,22 @@ class design_class(QDialog):
 		else:
 			self.tflag = 0
 			self.label.setText('Will get Temperature values in Celcius')
+			
+	def profile(self):
+		global time1 
+		global time2 
+		global time3 
+
+		global a1 
+		global a2 
+		global a3 
+			
+		start_profiling()
+		self.label_2.setText('{0:0.4f} ms'.format(a1))
+		self.label_3.setText('{0:0.4f} ms'.format(a2))
+		self.label_4.setText('{0:0.4f} ms'.format(a3))
+		
+		self.plot_graph_protocol()
 			
 	
 
@@ -236,6 +424,55 @@ class design_class(QDialog):
 		plt.xlabel('Blue-Latest, Red-Average, Green-Highest, Yellow-Lowest')
 		plt.ylabel('Humidity (%)')
 		plt.title('Humidity Graph')
+		plt.grid(True)
+		plt.draw()			
+		plt.pause(0.001)
+		plt.ion()
+		plt.show()
+		
+	# plot both the graphs after updating values
+	def plot_graph_protocol(self):
+		
+		global time1 
+		global time2 
+		global time3 
+
+		global a1 
+		global a2 
+		global a3 
+		
+		sum1 = sum(time1)
+		sum2 = sum(time2)
+		sum3 = sum(time3)
+		
+		idx = [1, 2, 3]
+		pkts = [20, 20, 20]
+		avgt = [a1, a2, a3]
+		totalt = [sum1, sum2, sum3]
+		
+		plt.clf()
+		
+		plt.subplot(511)
+		plt.bar(idx, pkts, color='b', width=0.5)
+		plt.xlabel('1 - MQTT, 2 - CoAP, 3 - WebSocket')
+		plt.ylabel('Number of packets')
+		plt.title('Packets sent/received')
+		plt.grid(True)
+		
+		plt.subplot(513)
+		plt.bar(idx, avgt, color='g', width=0.5)
+		plt.xlabel('1 - MQTT, 2 - CoAP, 3 - WebSocket')
+		plt.ylabel('Time (ms)')
+		plt.title('Average roundtime')
+		plt.autoscale(tight=True)
+		plt.grid(True)
+		
+		plt.subplot(515)
+		plt.bar(idx, totalt, color='g', width=0.5)
+		plt.xlabel('1 - MQTT, 2 - CoAP, 3 - WebSocket')
+		plt.ylabel('Time (ms)')
+		plt.title('Total roundtime')
+		plt.autoscale(tight=True)
 		plt.grid(True)
 		plt.draw()			
 		plt.pause(0.001)
