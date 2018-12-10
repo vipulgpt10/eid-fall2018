@@ -9,7 +9,7 @@ class MQTTClient(object):
         self.response = None
         self.ms = 0
         self.client = mqtt.Client()
-        self.client.connect('10.201.9.97', 1883, 60)
+        self.client.connect('10.0.0.246', 1883, 60)
         self.client.on_connect = self.on_connect
         self.client.on_message = self.on_message
 

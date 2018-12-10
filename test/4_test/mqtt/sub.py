@@ -12,9 +12,12 @@ def on_message(client, userdata, msg):
     client.disconnect()
 
 client = mqtt.Client()
-client.connect('10.0.0.39',1883,60)
+
+client.connect('10.0.0.246', 1883, 60)
 
 client.on_connect = on_connect
 client.on_message = on_message
+
+
 
 client.loop_forever()
